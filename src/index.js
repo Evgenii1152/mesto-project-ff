@@ -1,35 +1,58 @@
 import "./index.css";
-import {initialCards} from "./cards.js";
-
-// @todo: Темплейт карточки
-const cardTemplate = document.querySelector("#card-template").content;
+import {
+  initialCards,
+  createCard,
+  deleteCard,
+  openPopup,
+  closePopup,
+  like,
+  openImg,
+} from "./cards.js";
 
 // @todo: DOM узлы
 const content = document.querySelector(".places__list");
+const cardAddBtn = document.querySelector(".profile__add-button");
+const editProfileBtn = document.querySelector(".profile__edit-button");
+const popups = document.querySelectorAll(".popup");
+const popupNewCard = document.querySelector(".popup_type_new-card");
+const popupEdit = document.querySelector(".popup_type_edit");
+const popupImg = document.querySelector(".popup_type_image");
 
-// @todo: Функция создания карточки
-function createCard(link, name, deleteCard) {
-  const cardElement = cardTemplate
-    .querySelector(".places__item")
-    .cloneNode(true);
+//открытие попап
+cardAddBtn.addEventListener("click", () => {
+  openPopup(popupNewCard);
+});
 
-  const cardImage = cardElement.querySelector(".card__image");
-  cardImage.src = link;
-  cardImage.alt = name;
-  cardElement.querySelector(".card__title").textContent = name;
+editProfileBtn.addEventListener("click", () => {
+  openPopup(popupEdit);
+});
 
-  const cardDeleteButton = cardElement.querySelector(".card__delete-button");
-  cardDeleteButton.addEventListener("click", () => deleteCard(cardElement));
+//
+popups.forEach(function (popups) {
+  popups.classList.add(".popup_is-animated");
 
-  return cardElement;
-}
-// @todo: Функция удаления карточки
-function deleteCard(cardElement) {
-  cardElement.remove();
-}
+  popups.addEventListener("click", (evt) => {
+    if (evt.currentTarget === evt.target) {
+      const openModal = document.querySelector(".popup_is-opened");
+      closePopup(openModal);
+    }
+  });
+  const popupCloseBtn = popups.querySelector(".popup__close");
+  popupCloseBtn.addEventListener("click", () => {
+    closePopup(popups);
+  });
+});
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach(function (item) {
-  const cardElement = createCard(item.link, item.name, deleteCard);
+  const cardElement = createCard(
+    item.link,
+    item.name,
+    deleteCard,
+    like,
+    openImg
+  );
   content.append(cardElement);
 });
+
+

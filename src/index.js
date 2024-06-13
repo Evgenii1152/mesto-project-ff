@@ -7,7 +7,10 @@ import {
 
 import { openPopup, closePopup} from "./components/modal.js";
 
-import {initialCards} from "./components/cards.js";  
+import {initialCards} from "./components/cards.js";
+
+import {showInputError, hideInputError, isValid, setEventListeners, enableValidation} from "./components/validation.js";
+
 
 // @todo: DOM узлы
 const content = document.querySelector(".places__list");
@@ -27,6 +30,16 @@ const profileTitle = document.querySelector(".profile__title");
 const popupTypeImg = document.querySelector(".popup_type_image");
 const popupImg = document.querySelector(".popup__image");
 const popupNameImg = document.querySelector(".popup__caption");
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+};
+
+enableValidation(validationConfig);
 
 //открытие попап
 cardAddBtn.addEventListener("click", () => {
@@ -52,6 +65,7 @@ popups.forEach(function (popups) {
     closePopup(popups);
   });
 });
+
 
 // @todo: Вывести карточки на страницу
 initialCards.forEach(function (item) {
@@ -101,3 +115,4 @@ function openImg(cardLink, cardName) {
   popupImg.alt = cardName;
   openPopup(popupTypeImg);
 };
+
